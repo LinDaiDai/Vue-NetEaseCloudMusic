@@ -1,0 +1,85 @@
+{
+    "songs": [
+        {
+            "name": "舍得",
+            "id": 448144321,
+            "pst": 0,
+            "t": 0,
+            "ar": [
+                {
+                    "id": 12232132,
+                    "name": "王呈章",
+                    "tns": [],
+                    "alias": []
+                }
+            ],
+            "alia": [],
+            "pop": 100.0,
+            "st": 0,
+            "rt": null,
+            "fee": 0,
+            "v": 8,
+            "crbt": null,
+            "cf": "",
+            "al": {
+                "id": 35069313,
+                "name": "舍得",
+                "picUrl": "http://p1.music.126.net/VYptX9WFOlkrLFgBwroxlA==/3413983646802350.jpg",
+                "tns": [],
+                "pic": 3413983646802350
+            },
+            "dt": 262271,
+            "h": {
+                "br": 320000,
+                "fid": 0,
+                "size": 10493954,
+                "vd": -2.34
+            },
+            "m": {
+                "br": 160000,
+                "fid": 0,
+                "size": 5247000,
+                "vd": -1.9
+            },
+            "l": {
+                "br": 96000,
+                "fid": 0,
+                "size": 3148218,
+                "vd": -1.9
+            },
+            "a": null,
+            "cd": "1",
+            "no": 0,
+            "rtUrl": null,
+            "ftype": 0,
+            "rtUrls": [],
+            "djId": 0,
+            "copyright": 2,
+            "s_id": 0,
+            "rtype": 0,
+            "rurl": null,
+            "mst": 9,
+            "cp": 22036,
+            "mv": 5592772
+        }
+    ],
+    "privileges": [
+        {
+            "id": 448144321,
+            "fee": 0,
+            "payed": 0,
+            "st": 0,
+            "pl": 320000,
+            "dl": 320000,
+            "sp": 7,
+            "cp": 1,
+            "subp": 1,
+            "cs": false,
+            "maxbr": 999000,
+            "fl": 320000,
+            "toast": false,
+            "flag": 0
+        }
+    ],
+    "code": 200
+}

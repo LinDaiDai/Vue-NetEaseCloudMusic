@@ -1,0 +1,72 @@
+{
+    "loginType": 1,
+    "code": 200,
+    "account": {
+        "id": 495286365,
+        "userName": "5_7EA54530046E4D3EB944D93DAA82B4D2",
+        "type": 5,
+        "status": 0,
+        "whitelistAuthority": 0,
+        "createTime": 1496019417301,
+        "salt": "",
+        "tokenVersion": 0,
+        "ban": 0,
+        "baoyueVersion": 0,
+        "donateVersion": 0,
+        "vipType": 0,
+        "viptypeVersion": 0,
+        "anonimousUser": false
+    },
+    "profile": {
+        "detailDescription": "",
+        "djStatus": 0,
+        "followed": false,
+        "userId": 495286365,
+        "accountStatus": 0,
+        "nickname": "你的丨凉凉",
+        "province": 360000,
+        "defaultAvatar": false,
+        "avatarUrl": "http://p1.music.126.net/XRF8-GpR4-zrRH-1ZD_Z8g==/18583945534614720.jpg",// 头像
+        "gender": 1,
+        "birthday": -2209017600000,
+        "city": 360100,
+        "mutual": false,
+        "remarkName": null,
+        "expertTags": null,
+        "experts": {},
+        "avatarImgId": 18583945534614720,
+        "backgroundImgId": 109951162868128395,
+        "userType": 0,
+        "vipType": 0,
+        "authStatus": 0,
+        "backgroundUrl": "http://p1.music.126.net/2zSNIqTcpHL2jIvU6hG0EA==/109951162868128395.jpg", // 登录背景图片
+        "description": "",
+        "backgroundImgIdStr": "109951162868128395",
+        "avatarImgIdStr": "18583945534614720",
+        "signature": "",
+        "authority": 0,
+        "avatarImgId_str": "18583945534614720"
+    },
+    "bindings": [
+        {
+            "expired": false,
+            "refreshTime": 1496019441,
+            "expiresIn": 2147483647,
+            "tokenJsonStr": "{\"countrycode\":\"\",\"cellphone\":\"13979318939\",\"hasPassword\":true}",
+            "userId": 495286365,
+            "url": "",
+            "id": 3128582426,
+            "type": 1
+        },
+        {
+            "expired": false,
+            "refreshTime": 1509181917,
+            "expiresIn": 7776000,
+            "tokenJsonStr": "{\"access_token\":\"C127A322EE86B8E5194DD4C77F336A50\",\"openid\":\"7EA54530046E4D3EB944D93DAA82B4D2\",\"query_authority_cost\":418,\"nickname\":\"汪~\",\"partnerType\":\"0\",\"expires_in\":7776000,\"login_cost\":762,\"authority_cost\":1446}",
+            "userId": 495286365,
+            "url": "",
+            "id": 3128558102,
+            "type": 5
+        }
+    ]
+}
