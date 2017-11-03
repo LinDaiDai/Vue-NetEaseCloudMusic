@@ -4,6 +4,7 @@ import Router from 'vue-router'
 // 异步引入方式,只有在访问的时候才会加载
 const MyMusic = resolve => require(['../pages/MyMusic/MyMusic.vue'], resolve)
 const NewlyPlay = resolve => require(['../pages/MyMusic/NewlyPlay.vue'], resolve)
+const MyLikeList = resolve => require(['../pages/MyMusic/MyLikeList.vue'], resolve)
 const Home = resolve => require(['../pages/Home/Home.vue'], resolve)
 const Friend = resolve => require(['../pages/Friend/Friend.vue'], resolve)
 const Search = resolve => require(['../pages/Search/Search.vue'], resolve)
@@ -65,6 +66,14 @@ routes: [
     path: 'newlyplay',
     name: 'NewlyPlay',
     component: NewlyPlay,
+    meta: {
+      notKeepAlive: false
+    }
+  },
+  {
+    path: '/mylikelist',
+    name: 'MyLikeList',
+    component: MyLikeList,
     meta: {
       notKeepAlive: false
     }

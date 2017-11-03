@@ -26,6 +26,7 @@ export default {
     http.get('./api/personalized/djprogram')
     .then(data => {
       homeData.mv = data.data.result
+      homeData.code = 200
     })
     commit('GETHOME', homeData)
   },
@@ -100,16 +101,55 @@ export default {
     http.get(userPlayListUrl)
       .then(data => {
         // 用户歌单信息
-        userplayList = data.data.playlist
+        userplayList = data.data.playlist[0]
+        // 用户me页背景图片
+        let backgroundUrl = userplayList.backgroundUrl
+        store.state.userInfo.backgroundUrl = backgroundUrl
+        // 我喜欢的音乐封面
+        let coverImgUrl = userplayList.coverImgUrl
+        // 播放次数
+        let playCount = userplayList.playCount
+        // 歌单id(743364458)
+        let userplayListId = userplayList.id
+        myMusic.myLikeList = {}
+        myMusic.myLikeList.coverImgUrl = coverImgUrl
+        myMusic.myLikeList.playCount = playCount
+        myMusic.myLikeList.listId = userplayListId
         // 我喜欢的音乐(参数: 歌单id)
-        let myLikeUrl = '/api/playlist/detail?id=' + userplayList[0].id
-        let myLikeList = []
+        let myLikeUrl = '/api/playlist/detail?id=' + userplayListId
+        let list = []
         // 5.获取喜欢的音乐
         http.get(myLikeUrl)
           .then(data => {
-            if (data.data.playlist !== undefined) {
-              myLikeList = data.data.playlist.tracks
-              myMusic.myLikeList = myLikeList
+            if (data.data.code === 200) {
+              let tracks = data.data.playlist.tracks
+              for (var i = 0; i < tracks.length; i++) {
+                // 定义数组存放歌手信息
+                let artists = []
+                for (var j = 0; j < tracks[i].ar.length; j++) {
+                  // 若歌手大于2, 则只取前俩个
+                  if (j === 2) {
+                    break
+                  }
+                  console.log(tracks[i].ar[j])
+                  artists.push(tracks[i].ar[j].name)
+                }
+                artists = artists.join('/')
+                // 定义对象表示每一首歌
+                let song = {
+                  id: tracks[i].id,
+                  name: tracks[i].name,
+                  artists: artists,
+                  album: tracks[i].al,
+                  del: tracks[i].name + '-' + tracks[i].al.name,
+                  mp3Url: '',
+                  mvid: tracks[i].mv,
+                  picUrl: ''
+                }
+                // 将每首歌存到数组中
+                list.push(song)
+              }
+              myMusic.myLikeList.list = list
               // 将用户最近播放, 我的电台, 我的收藏和创建歌单(数字),喜欢的音乐保存至vuex中
               store.commit('GETUSERHOME', myMusic)
               console.log(myMusic)
@@ -210,6 +250,7 @@ export default {
     // 2.加载完元数据后, 设置当前音乐总时长
     state.audioElement.onloadedmetadata = function () {
       state.songDuration = this.duration
+      console.log(state.songDuration)
     }
     // 3.当需要为下一帧进行缓冲时
     state.audioElement.onwaiting = function () {
@@ -220,13 +261,45 @@ export default {
       state.isBuffering = false
     }
     // 5.当前播放位置发生改变时, 获取当前播放位置
-    state.audioElement.ontimeupdata = function () {
+    state.audioElement.ontimeupdate = function () {
       state.songCurrentTime = this.currentTime
       // 同时更新改变歌词的位置
     }
   },
+  // 全部播放
+  playAll ({dispatch, state, commit}, payload) {
+    // 先判断当前的播放状态, 若是在播放, 则先暂停
+    if (state.playStatus) {
+      commit('PAUSECONTROL')
+    }
+    // 将播放时间调为0
+    state.audioElement.currentTime = 0
+    // 将当前播放的列表清空
+    commit('RESETPLAYLIST')
+    // 将传进来的播放列表设定为当前播放列表
+    let playList = {
+      id: 0, //  类型不为搜索的歌单ID
+      type: 'list', // 当前播放列表来源 { list: 歌单列表, search: 搜索列表}
+      list: payload // 播放列表
+    }
+    commit('SETPLAYLIST', playList)
+    console.log(state.playList)
+    // 从当前播放列表的第一首歌开始播放
+    dispatch('playFromPlayList', 0)
+  },
   // 播放点击的这一首
   playThis (store, payload) {
+    // 先判断点击的这首歌在不在当前播放的列表中
+    let playList = store.state.playList.list
+    for (var i = 0; i < playList.length; i++) {
+      // 若是有歌曲id相同, 则表示在, 只需将当前播放的歌曲调至这个位置就行了
+      if (payload.id === playList[i].id) {
+        // 调用'从在播放的列表中选中播放'
+        store.dispatch('playFromPlayList', i)
+        return {status: true, msg: '切换歌曲成功'}
+      }
+    }
+    // 若歌曲不在播放列表中则重新添加进去
     // 将点击的这首歌添加至播放列表
     store.commit('ADDSONGMSG', payload)
     // 获取刚刚添加到播放列表的这首歌的下标(也就是数组最后一位)
@@ -286,7 +359,7 @@ export default {
   // 随机播放
   randomPlay ({dispatch, state, commit}) {
     // 生成一个随机的下标
-    let randomIndex = this.randomInt(0, state.playList.list.length - 1)
+    let randomIndex = dispatch('randomInt', 0, state.playList.list.length - 1)
     // 判断若是生成的下标为当前播放的下标, 防止随机到当前播放的音频
     if (randomIndex === state.songMsgIndex) {
       return dispatch('randomPlay')

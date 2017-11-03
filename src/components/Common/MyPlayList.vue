@@ -1,11 +1,11 @@
 <template>
   <div class="playListComponent">
     <transition name="fade">
-      <div v-if="componentMounted" @click="close" class="mask"></div>
+      <div @click="close" class="mask"></div>
     </transition>
     <transition name="up">
-      <div v-if="componentMounted" class="playListMain flexed">
-        <div class="playListHearder flexed">
+      <div class="playListMain fixed">
+        <div class="playListHearder fixed">
           <div class="hearderLeft">
             <div class="playMode"  @click="changePlayMode">
               <div class="playModeIcon iconfont" :class="{'icon-liebiaoxunhuan': playMode === 'listCycle', 'icon-suijibofang': playMode === 'listRandom', 'icon-danquxunhuan': playMode === 'singleCycle'}"></div>
@@ -25,27 +25,24 @@
               </div>
           </div>
         </div>
-        <div class="playList flexed">
+        <div class="playList fixed">
             <ul class="playListUl">
-                <template v-for="(item, index) in playList.list" >
-                    <li class="playListItem" :key="item.id">
-                        <div class="playListItemMsg" @click="playThis(item, index)">
-                            <i class="iconfont icon-iconfontdaohanggonggao" v-if="item.id === songMsg.id"></i>
-                            <span class="playMsgName">{{item.name}}</span>
-                            <span class="playMsgSinger">{{item.artists}}</span>
-                        </div>
-                        <div class="iconfont icon-chuyidong playRemove" @click="removeThis(item, index)"></div>
-                    </li>
-                </template>
+                <li class="playListItem" v-for="(item, index) in playList.list" :key="item.id" >
+                    <div class="playListItemMsg" @click="playThis(item, index)">
+                        <i class="iconfont icon-iconfontdaohanggonggao" v-if="item.id === songMsg.id"></i>
+                        <span class="playMsgName">{{item.name}}</span>
+                        <span class="playMsgSinger">-{{item.artists}}</span>
+                    </div>
+                    <div class="iconfont icon-chuyidong playRemove" @click="removeThis(item, index)"></div>
+                </li>
             </ul>
         </div>
       </div>
     </transition>
-  </div> 
+  </div>
 </template>
 <script>
 export default {
-  props: ['componentMounted'],
   data () {
     return {
 
@@ -56,6 +53,10 @@ export default {
     playMode () {
       return this.$store.state.playMode
     },
+    // 当前播放的这首歌
+    songMsg () {
+      return this.$store.state.songMsg
+    },
     // 播放列表
     playList () {
       return this.$store.state.playList
@@ -64,11 +65,11 @@ export default {
   methods: {
     // 关闭显示
     close () {
-      this.$emit.close()
+      this.$store.commit('CHANGEPLAYLISTBOL')
     },
     // 切换播放模式
     changePlayMode () {
-      this.store.commit('CHANGEPLAYMODE')
+      this.$store.commit('CHANGEPLAYMODE')
     },
     // 点击播放这首歌
     playThis (item, index) {
@@ -124,8 +125,8 @@ export default {
     -o-transform: translateY(100%);
     transform: translateY(100%);
 }
-.flexed{
-    position: flexed;
+.fixed{
+    position: fixed;
 }
 .playListMain{
     width: 100%;
@@ -136,18 +137,24 @@ export default {
     bottom: 0;
     top: 14rem;
     text-align: left;
+    z-index: 99;
     .playListHearder{
         height: 4.5rem;
+        width: 100%;
         line-height: 4.5rem;
         font-size: 1.4rem;
         top: 14rem;
+        border-bottom: 1px solid #ccc;
         .hearderLeft{
             float: left;
-            width: 60%;
+            width: 50%;
             height: 100%;
+            .icon-suijibofang, .icon-danquxunhuan{
+              font-size: 2.5rem;
+            }
             .playModeIcon{
                 float: left;
-                width: 20%;
+                width: 30%;
                 height: 100%;
                 text-align: center;
                 color: #ccc;
@@ -155,18 +162,23 @@ export default {
             .playModeName{
                 float: left;
                 height: 100%;
-                width: 80%;
+                width: 70%;
             }
         }
         .hearderRight{
             float: left;
-            width: 40%;
+            width: 50%;
             height: 100%;
-            padding: 1rem;
+            padding: 1.5rem 1rem;
+            line-height: 1.5rem;
+            text-align: center;
             .playHandle{
                 width: 50%;
                 height: 100%;
                 float: left;
+                i{
+                   color: #ccc;
+                }
             }
             .playHandle:first-child{
                 border-right: 1px solid #ccc;
@@ -177,38 +189,60 @@ export default {
 .playList{
     padding-left: 1rem;
     width: 100%;
-    top: 18.5rem;
+    top: 18.7rem;
     bottom: 0;
     left: 0;
     right: 0;
+    border-top: 1px solid #ccc;
+    overflow: auto;
     .playListUl{
        width: 100%;
-       height: 100%;
        .activeList{
            color: rgb(218, 15, 15);
        }
     }
-    .playListLi{
+    .playListItem{
         position: relative;
         height: 4.5rem;
         border-bottom: 1px solid #ccc;
         font-size: 1.6rem;
         padding: .5rem 0;
-        color: #333;
+        color: #111;
         .playListItemMsg{
-            width: 100%;
+            max-width: 80%;
             height: 100%;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            line-height: 3.5rem;
+            span{
+                max-height: 1.6rem;
+                float: left;
+            }
             i{
                 width: 3rem;
                 height: 100%;
                 color: rgb(218, 15, 15);
                 font-size: 1.6rem;
             }
+            .playMsgSinger{
+              color: #ccc;
+              display: inline-block;
+              font-size: 1.2rem;
+              height: 100%;
+              max-width: 30%;
+            }
+            .playMsgName{
+              display: inline-block;
+            //   max-height: 2.5rem;
+              max-width: 60%;
+            }
         }
         .playRemove{
             position: absolute;
             color: #cccccc;
             height: 100%;
+            line-height: 4.5rem;
+            font-size: 2.5rem;
             width: 3rem;
             top: 0;
             right: 0;   

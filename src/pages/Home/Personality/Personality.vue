@@ -62,6 +62,9 @@
 </template>
 <script>
 export default {
+  created () {
+
+  },
   data () {
     return {
 
@@ -80,9 +83,13 @@ export default {
     privatecontent () {
       // 由于获取到的数据在实际中, 第一个是最后一个, 所以对数组做处理
       let arr = this.$store.state.homeData.privatecontent
-      let firstChild = arr.shift()
-      arr.push(firstChild)
-      return arr
+      if (arr !== undefined) {
+        let firstChild = arr.shift()
+        arr.push(firstChild)
+        return arr
+      } else {
+        return []
+      }
     },
     // 推荐MV
     personalizedMv () {

@@ -8,8 +8,10 @@
     <div class="main">
       <ul class="singleUl" id="newlyPlayUl">
         <li id="firstLi">
-          <i class="iconfont icon-zanting1"></i>
-          播放全部<span id="count">(共)</span>
+          <div class="firstLeft">
+            <i class="iconfont icon-zanting1"></i>
+            播放全部<span id="count">(共{{newlyPlay.length}})</span>
+          </div>
           <div class="firstRight">
             <span class="iconfont icon-fenlei"></span>
             多选
@@ -22,10 +24,15 @@
         </li>
       </ul>
     </div>
+    <my-play-list v-if='playListBol'></my-play-list>
   </div>
 </template>
 <script>
+import MyPlayList from '../../components/Common/MyPlayList.vue'
 export default {
+  components: {
+    MyPlayList
+  },
   data () {
     return {
 
@@ -34,14 +41,23 @@ export default {
   computed: {
     newlyPlay () {
       return this.$store.state.myMusic.newlyPlay
+    },
+    playListBol () {
+      return this.$store.state.playListBol
     }
   },
   methods: {
+    // 返回
     goBack () {
       this.$router.go(-1)
     },
+    // 播放当前选中的歌
     playThis (item) {
       this.$store.dispatch('playThis', item)
+    },
+    // 播放当前列表
+    playThisList (playList) {
+
     }
   }
 }
@@ -77,6 +93,11 @@ export default {
       text-align: center;
       font-size: @fontSizeLarge;
     }
+    .firstLeft{
+      width: 70%;
+      height: 100%;
+      float: left;
+    }
     .firstRight{
       width: 6rem;
       font-size: @fontSizeSmall;
@@ -90,7 +111,6 @@ export default {
       color: #333;
       font-size: @fontSizeMediumX;
     }
-    
   }
 }
 </style>

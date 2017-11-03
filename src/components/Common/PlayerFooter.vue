@@ -1,29 +1,29 @@
 <template>
   <div class="playerFooter">
-    <div class="playerPicUrl">
+    <div class="playerPicUrl" @click.stop="goPlayer">
         <img :src="songMsg.picUrl" alt="">
     </div>
-    <div class="songMsg">
+    <div class="songMsg" @click.stop="goPlayer">
         <h4>{{songMsg.name}}</h4>
         <div class="songLyric">{{songMsg.artists}}</div>
     </div>
     <div @click="playControl" class="playStatus">
       <i class="iconfont" :class="{'icon-zanting': playStatus, 'icon-zanting3': !playStatus}"></i>
-      <i class="iconfont icon-fenlei" @click.stop="playListBol=true"></i>
+      <i class="iconfont icon-fenlei" @click.stop="showList"></i>
     </div>
-    <play-list :component-mounted='playListBol' v-if="playList.list.length !== 0" @click="playListBol=false"></play-list>
+    <my-play-list v-if="playListBol"></my-play-list>
   </div>
 </template>
 <script>
-import PlayList from './PlayList.vue'
+import MyPlayList from './MyPlayList.vue'
 export default {
-  component: {
-    PlayList
-  },
   data () {
     return {
-      playListBol: false
+
     }
+  },
+  components: {
+    MyPlayList
   },
   computed: {
     // 播放状态
@@ -37,6 +37,9 @@ export default {
     // 当前播放的歌曲列表
     playList () {
       return this.$store.state.playList
+    },
+    playListBol () {
+      return this.$store.state.playListBol
     }
   },
   methods: {
@@ -47,6 +50,15 @@ export default {
       } else {
         this.$store.commit('PLAYCONTROL')
       }
+    },
+    // 控制显示隐藏歌单
+    showList () {
+      console.log(this.playListBol)
+      this.$store.commit('CHANGEPLAYLISTBOL')
+    },
+    // 点击查看播放详情
+    goPlayer () {
+      this.$router.push('./player')
     }
   }
 }

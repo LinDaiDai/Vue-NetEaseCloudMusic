@@ -7,6 +7,10 @@ export default {
   CHANGEMEBOL (state) {
     state.meBol = !state.meBol
   },
+  // 控制播放列表显示隐藏
+  CHANGEPLAYLISTBOL (state) {
+    state.playListBol = !state.playListBol
+  },
   // 获取用户信息
   GETUSERINFO (state, data) {
     state.userInfo = data
@@ -40,6 +44,19 @@ export default {
   PAUSECONTROL (state) {
     state.audioElement.pause()
     state.playStatus = false
+  },
+  // 设置当前播放时间
+  SETSONGCURRENTTIME (state, time) {
+    state.songCurrentTime = time
+    state.audioElement.currentTime = time
+  },
+  // 设置当前正在播放的音频总时长
+  SETSONGDURATION (state, time) {
+    state.songDuration = time
+  },
+  // 设置正在播放的音频在列表中的索引
+  SETSONGMSGINDEX (state, index) {
+    state.songMsgIndex = index
   },
   // 切换播放模式
   CHANGEPLAYMODE (state) {

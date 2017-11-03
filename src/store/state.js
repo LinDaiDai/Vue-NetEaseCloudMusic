@@ -7,6 +7,8 @@ export default {
   meBol: false,
   // 用于判断用户是否登录
   loginBol: false,
+  // 控制播放列表显示隐藏
+  playListBol: false,
   // 存储用户信息
   userInfo: {},
   /**
@@ -17,6 +19,21 @@ export default {
    * mycollectNum: 我的收藏(num)
    * createdPlaylistCount: 创建的歌单(num)
    * myLikeList: 我喜欢的音乐
+   * myLikeList数据结构(对象):{
+   * listId: 歌单id,
+   * coverImgUrl: 我喜欢的音乐封面
+   * playCount: 播放次数,
+   * list: [
+   * id: 歌曲id
+   * name: 歌曲名称
+   * artists: 演唱歌手
+   * album: 专辑信息,
+   * del: 演唱歌手-专辑名称,
+   * mp3Url: 播放链接,
+   * mvid: mv链接id, 0为没有id,
+   * picUrl: 封面图片
+   *  ]
+   * }
    */
   myMusic: {},
   // 搜索结果
@@ -63,6 +80,8 @@ export default {
   songMsgIndex: 0,
   // 正在播放的音频的信息
   songMsg: {},
+  // 音频对象
+  audioElement: '',
   // 正在播放的歌的歌词组
   lyricArr: [],
   // 正在播放的音频的播放时间

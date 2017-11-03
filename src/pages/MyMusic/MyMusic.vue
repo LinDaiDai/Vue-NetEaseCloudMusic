@@ -4,7 +4,7 @@
       <li class="loaclMusic">
         <div class="title">本地音乐<span>(0)</span></div>
       </li>
-      <li class="newlyPlay" @click="goTo()">
+      <li class="newlyPlay" @click="goTo({name: 'NewlyPlay'})">
         <div class="title">最近播放<span>({{myMusic.newlyPlay.length}})</span></div>
       </li>
       <li class="download">
@@ -27,9 +27,9 @@
         <div class="logoImg">
           <img class="imgBlock" src="./images/heart.png" alt="">
         </div>
-        <div class="likeMain">
+        <div class="likeMain" @click="goTo({name: 'MyLikeList'})">
           <p class="myLikeTitle">我喜欢的音乐</p>
-          <p class="count">{{myMusic.myLikeList.length}}首</p>
+          <p class="count">{{myMusic.myLikeList.list.length}}首</p>
         </div>
       </li>
     </ul>
@@ -53,11 +53,11 @@
 <script>
 import { MessageBox, Indicator } from 'mint-ui'
 export default {
-  mounted () {
+  created () {
     if (this.$store.state.loginBol) {
       console.log('登录成功')
       Indicator.open()
-      if (this.myMusic.code === 200) {
+      if (this.$store.state.myMusic.code === 200) {
         console.log('加载成功')
         Indicator.close()
       }
@@ -82,7 +82,7 @@ export default {
         // 若登录, 则获取用户在我的音乐页的信息
         return this.$store.state.myMusic
       } else {
-        return {newlyPlay: [], myRadio: [], mycollectNum: 0, createdPlaylistCount: 1, myLikeList: []}
+        return {newlyPlay: [], myRadio: [], mycollectNum: 0, createdPlaylistCount: 1, myLikeList: {list: []}}
       }
     }
   },
@@ -96,9 +96,9 @@ export default {
       this.setBol = !this.setBol
     },
     // 路由跳转
-    goTo () {
+    goTo (hash) {
       if (this.$store.state.loginBol) {
-        this.$router.push({name: 'NewlyPlay'})
+        this.$router.push(hash)
       } else {
         console.log('wei')
         MessageBox({
