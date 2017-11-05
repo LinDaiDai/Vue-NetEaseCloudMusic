@@ -58,6 +58,40 @@ export default {
   SETSONGMSGINDEX (state, index) {
     state.songMsgIndex = index
   },
+  // 设置当前播放的歌曲的歌词
+  SETLYRICARR (state, lyricArr) {
+    state.lyricArr = lyricArr
+  },
+  // 设置当前播放的歌词下标
+  SETCURRENTLYRICARRINDEX (state, time) {
+    // 歌词为空, 不做处理
+    if (state.lyricArr.length === 0) {
+      return false
+    }
+    // 纯音乐
+    if (state.lyricArr[0].noLyric) return
+    // 暂时无歌词
+    if (state.lyricArr[0].uncollected) return
+    // 不支持滚动
+    if (state.lyricArr[0].unScroll) return
+    let length = state.lyricArr.length
+    for (let i = 0; i < length; i++) {  // 不为最后一句歌词
+      if (i !== (length - 1)) {
+        if (time > state.lyricArr[i].time && time < state.lyricArr[i + 1].time) {
+          state.currentLyricArrIndex = i
+          console.log(state.liHeight)
+          state.lyricTop = 17 - i * state.liHeight / 12
+          console.log(state.lyricTop)
+        }
+      } else {
+        // 最后一句歌词不做处理
+      }
+    }
+  },
+  // 设置歌词的高度
+  SETLIHEIGHT (state, liHeight) {
+    state.liHeight = liHeight
+  },
   // 切换播放模式
   CHANGEPLAYMODE (state) {
     //  三种：listCycle（列表循环），listRandom（列表随机）,singleCycle(单曲循环)

@@ -11,19 +11,14 @@
       <i class="iconfont" :class="{'icon-zanting': playStatus, 'icon-zanting3': !playStatus}"></i>
       <i class="iconfont icon-fenlei" @click.stop="showList"></i>
     </div>
-    <my-play-list v-if="playListBol"></my-play-list>
   </div>
 </template>
 <script>
-import MyPlayList from './MyPlayList.vue'
 export default {
   data () {
     return {
 
     }
-  },
-  components: {
-    MyPlayList
   },
   computed: {
     // 播放状态
@@ -37,9 +32,6 @@ export default {
     // 当前播放的歌曲列表
     playList () {
       return this.$store.state.playList
-    },
-    playListBol () {
-      return this.$store.state.playListBol
     }
   },
   methods: {

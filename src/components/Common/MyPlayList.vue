@@ -215,6 +215,7 @@ export default {
             overflow: hidden;
             line-height: 3.5rem;
             span{
+                display: inline-block;
                 max-height: 1.6rem;
                 float: left;
             }
@@ -222,6 +223,7 @@ export default {
                 width: 3rem;
                 height: 100%;
                 color: rgb(218, 15, 15);
+                padding-left: 0.5rem;
                 font-size: 1.6rem;
             }
             .playMsgSinger{

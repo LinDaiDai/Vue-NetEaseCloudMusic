@@ -48,7 +48,6 @@ export default {
     key: function (val) {
       this.navBol = true
       this.$store.dispatch('getResules', val)
-      console.log(this.$store.state.results)
     }
   },
   methods: {
@@ -97,7 +96,6 @@ export default {
     span{
       position: absolute;
       right: .5rem;
-      top:.5rem;
       color: white;
       font-size: 3rem;
     }

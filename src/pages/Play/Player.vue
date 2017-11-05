@@ -9,7 +9,7 @@
       <span class="iconRight iconfont icon-fenxiang"></span>
     </div>
     <div class="main">
-      <div class="mainTop" @click="changeLyric">
+      <div class="mainTop" @click.stop="changeLyric">
         <transition name="fade">
           <diskette v-if="!lyricBol"></diskette>
           <lyric v-if="lyricBol"></lyric>
@@ -21,8 +21,8 @@
           <div class="bar">
             <input type="range" v-model="value" :max="songDurationA" min="0" step="1">
             <div class="sliderBg sliderFill"></div>
-            <div class="sliderBg sliderUnFill" :style="{'width': sliderButtonLeft + 'px'}"></div>
-            <div class="sliderButtionContent" :style="{'left': sliderButtonLeft + 'px'}">
+            <div class="sliderBg sliderUnFill" :style="{'width': sliderButtonLeft + 'rem'}"></div>
+            <div class="sliderButtionContent" :style="{'left': sliderButtonLeft + 'rem'}">
               <div v-show="isBuffering" class="sliderLoading"></div>
               <div class="sliderButtion"></div>
             </div>
@@ -30,13 +30,13 @@
           <div class="songTime songDuration">{{songDuration}}</div>
         </div>
         <div class="playControl">
-          <div @click="changePlayMode" class="playMode" :class="{'listCycle': playMode === 'listCycle', 'listRandom': playMode === 'listRandom', 'singleCycle': playMode === 'singleCycle'}"></div>
+          <div @click.stop="changePlayMode" class="playMode" :class="{'listCycle': playMode === 'listCycle', 'listRandom': playMode === 'listRandom', 'singleCycle': playMode === 'singleCycle'}"></div>
           <div class="songControl">
-            <span @click="pre" class="pre"></span>
-            <span @click="playControl" class="playStatus" :class="{'playTrue': playStatus, 'playFalse': !playStatus}"></span>
-            <span @click="next" class="next"></span>
+            <span @click.stop="pre" class="pre"></span>
+            <span @click.stop="playControl" class="playStatus" :class="{'playTrue': playStatus, 'playFalse': !playStatus}"></span>
+            <span @click.stop="next" class="next"></span>
           </div>
-          <div @click="showList" class="playList"></div>
+          <div @click.stop="showList" class="playList"></div>
         </div>
       </div>
     </div>
@@ -113,7 +113,7 @@ export default {
       return timer
     },
     sliderButtonLeft () {
-      return (this.value / this.songDurationA) * 160
+      return (this.value / this.songDurationA) * 16
     }
   },
   methods: {
@@ -168,6 +168,7 @@ export default {
   width: 100%;
   #playerHearder{
     background-color: #6d3e3e;
+    z-index: 53;
   }
   .iconRight{
     font-size: 2rem;
@@ -209,6 +210,14 @@ export default {
   position: relative;
   width: 100%;
   height: 32.5rem;
+  overflow: hidden;
+}
+.mainContent{
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  z-index: 3;
+  background-color: #6d3e3e;
 }
 .progressBar{
   width: 100%;
@@ -258,11 +267,11 @@ export default {
     .sliderLoading,
     .sliderButtion{
         position: absolute;
-        top: 0.8rem;
+        top: 0.7rem;
         left: -0.1rem;
         z-index: 5;
-        width: 1.3rem;
-        height: 1.3rem;
+        width: 1.5rem;
+        height: 1.5rem;
         border-radius: 50%;
     }
     .sliderButtion{

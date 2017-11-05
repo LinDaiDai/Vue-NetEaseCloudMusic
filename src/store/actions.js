@@ -131,7 +131,6 @@ export default {
                   if (j === 2) {
                     break
                   }
-                  console.log(tracks[i].ar[j])
                   artists.push(tracks[i].ar[j].name)
                 }
                 artists = artists.join('/')
@@ -242,7 +241,7 @@ export default {
       } else {
         // 若为单曲循环, 则在1.5s后继续播放这首歌
         var timer = setTimeout(function () {
-          commit('playControl')
+          commit('PLAYCONTROL')
           clearTimeout(timer)
         }, 1500)
       }
@@ -264,6 +263,7 @@ export default {
     state.audioElement.ontimeupdate = function () {
       state.songCurrentTime = this.currentTime
       // 同时更新改变歌词的位置
+      commit('SETCURRENTLYRICARRINDEX', this.currentTime)
     }
   },
   // 全部播放
@@ -390,6 +390,85 @@ export default {
           console.log(store.state.playList, store.state.songMsg)
           store.commit('PLAYCONTROL')
           // 异步获取歌词
+          store.dispatch('loadLyric', payload.id)
+        }
+      })
+  },
+  // 加载歌词
+  loadLyric ({state, commit}, lyricId) {
+    // 参数, 歌曲id
+    let url = '/api/lyric?id=' + lyricId
+    http.get(url)
+      .then(({data}) => {
+        if (data.code === 200) {
+          console.log(data)
+          let timeReg = /\[\d\d:\d\d.?\d*\]/g // 匹配时间段, 如[00:20.060]
+          let timeFormatReg = /\d\d:\d\d.?\d*/g // 匹配必要的时间
+          let lyric = [] // 歌词
+          let lyricTranslate = [] // 翻译
+          var times
+          // 判断若是纯音乐
+          if (data.nolyric) {
+            state.lyricArr.push({
+              lyric: '纯音乐, 请欣赏',
+              nolyric: true
+            })
+            state.currentLyricArrIndex = 0
+            return true
+          }
+          if (data.uncollected) {
+            state.lyricArr.push({
+              lyric: '抱歉，暂无歌词',
+              uncollected: true
+            })
+            state.currentLyricArrIndex = 0
+            return true
+          }
+          times = data.lrc.lyric.match(timeReg) // 时间段
+          if (times === null) {
+            state.lyricArr.push({
+              lyric: '抱歉，该歌词不支持滚动',
+              unScroll: true
+            })
+            state.currentLyricArrIndex = 0
+            return true
+          }
+          // 将获取到的歌词做处理
+          data.lrc.lyric.split('\n').forEach(val => {  // 1.先将获取的歌词以'\n'为界限分隔
+            if (timeReg.test(val)) {  // 用正则以时间为分隔
+              lyric.push({
+                lyric: val.replace(timeReg, ''),  // 存储只有歌词的字符串
+                time: val                         // 存储带有时间和歌词的字符串
+              })
+            }
+          })
+          lyric.forEach((value, index) => {
+            value.times = value.time.match(timeFormatReg)[0]  // 使用时间正则只取时间如00:30.630
+            let min = value.times.split(':')[0] // 获取分钟如00
+            let sec = value.times.split(':')[1] // 获取秒钟如30.63
+            value.time = min * 60 + sec * 1     // 设置时间如30.63
+          })
+          // 获取翻译, 根据原语音时间来匹配对应的翻译
+          if (data.tlyric.lyric != null) {
+            lyricTranslate = data.tlyric.lyric.split('\n')
+            for (var i = 0; i < lyric.length; i++) {
+              let reg = new RegExp(lyric[i].times)  // 将时间当成正则来进行匹配, 与\[\d\d:\d\d\.?\d*\]保持一致
+              for (var j = 0; j < lyricTranslate.length; j++) {
+                if (reg.test(lyricTranslate[j])) {  // 匹配对应时间段的翻译
+                  lyric[i].translateLyric = lyricTranslate[j].replace(timeReg, '') // 去除时间
+                }
+              }
+            }
+          }
+          // 过滤空白歌词
+          lyric.forEach((val, index) => {
+            if (val.lyric === '') {
+              lyric.splice(index, 1)
+            }
+          })
+          commit('SETLYRICARR', lyric)
+          console.log(lyric)
+          state.currentLyricArrIndex = 0
         }
       })
   },

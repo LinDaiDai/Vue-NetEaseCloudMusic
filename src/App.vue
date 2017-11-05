@@ -8,6 +8,7 @@
       <router-view v-if="$route.meta.notKeepAlive"></router-view>
     </transition>
     <player-footer v-if="playListLen > 0"></player-footer>
+    <my-play-list v-if="playListBol"></my-play-list>
     <audio-controller></audio-controller>
   </div>
 </template>
@@ -15,12 +16,14 @@
 import TabBar from './components/TabBar/TabBar'
 import AudioController from './components/AudioController/AudioController'
 import PlayerFooter from './components/Common/PlayerFooter.vue'
+import MyPlayList from './components/Common/MyPlayList.vue'
 export default {
   name: 'app',
   components: {
     TabBar,
     AudioController,
-    PlayerFooter
+    PlayerFooter,
+    MyPlayList
   },
   // 一打开页面时, 获取个性推荐的轮播
   created () {
@@ -37,8 +40,13 @@ export default {
     tabBarShow () {
       return this.$store.state.tabBarShow
     },
+    // 播放列表长度
     playListLen () {
       return this.$store.state.playList.list.length
+    },
+    // 播放列表显示隐藏
+    playListBol () {
+      return this.$store.state.playListBol
     }
   }
 }

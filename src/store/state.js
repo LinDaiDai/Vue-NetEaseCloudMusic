@@ -84,10 +84,16 @@ export default {
   audioElement: '',
   // 正在播放的歌的歌词组
   lyricArr: [],
+  // 正在播放的歌词的下标
+  currentLyricArrIndex: 0,
   // 正在播放的音频的播放时间
   songCurrentTime: 0,
   // 正在播放的音频的总时长
   songDuration: 0,
   // 当前音频是否在缓冲状态
-  isBuffering: false
+  isBuffering: false,
+  // 歌词的top值
+  lyricTop: 17,
+  // 一个歌词的高度
+  liHeight: 0
 }

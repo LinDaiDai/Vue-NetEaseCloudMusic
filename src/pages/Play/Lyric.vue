@@ -6,11 +6,53 @@
         <input type="range" value="60" max="100">
       </div>
     </div>
+    <div class="lyricWindow">
+      <ul class="lyricUl" :style="{'top': lyricTop + 'rem'}">
+        <li v-for="(item, index) in lyricArr" :key="item.id" :ref="'item'" :class="{'noTranslate': !item.translateLyric, 'hasTranslate': item.translateLyric}">
+          <p v-if="item.lyric" :class="{'activeLyric': index === currentLyricArrIndex}">{{item.lyric}}</p>
+          <p class="translateLyric" v-if="item.translateLyric">{{ item.translateLyric }}</p>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 <script>
 export default {
+  mounted () {
+    // this.heightLi()
+  },
+  data () {
+    return {
+      // top: 17,
+      nowIndex: 0
+    }
+  },
+  computed: {
+    lyricArr () {
+      return this.$store.state.lyricArr
+    },
+    currentLyricArrIndex () {
+      return this.$store.state.currentLyricArrIndex
+    },
+    songCurrentTime () {
+      return this.$store.state.songCurrentTime
+    },
+    lyricTop () {
+      return this.$store.state.lyricTop
+    }
+  },
+  watch: {
+    currentLyricArrIndex: function (val) {
+      let pos = this.$refs['item'][val].getBoundingClientRect()
+      console.log(pos)
+      this.$store.commit('SETLIHEIGHT', pos.height)
+    }
+  },
+  methods: {
+    heightLi () {
 
+    }
+  }
 }
 </script>
 <style lang="less" scoped>
@@ -28,6 +70,7 @@ export default {
   right: 0;
   height: 2rem;
   padding: 0 2rem;
+  z-index: 2;
   div{
     float: left;
   }
@@ -91,6 +134,45 @@ export default {
         margin-top: -0.4rem; /*使滑块超出轨道部分的偏移量相等*/
         background: #ffffff; 
         border-radius: 50%; /*外观设置为圆形*/
+    }
+  }
+}
+.lyricWindow{
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  .lyricUl{
+    position: absolute;
+    top: 30%;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    li{
+      width: 100%;
+      padding:  0.6rem 0;
+      text-align: center;
+      p{
+      color: rgba(225, 225, 225, 0.7);
+      transition: all 0.3s;
+      }
+      .activeLyric{
+        color: rgba(225, 225, 225, 1);
+      }
+    }
+    .noTranslate{
+      height: 5rem;
+      font-size: 1.6rem;
+      line-height: 3rem;
+    }
+    .hasTranslate{
+      line-height: 1rem;
+      font-size: 1.4rem;
+      p{
+        padding: 0.2rem 0;
+      }
+    }
+    .translateLyric{
+      font-size: 1.2rem;
     }
   }
 }
