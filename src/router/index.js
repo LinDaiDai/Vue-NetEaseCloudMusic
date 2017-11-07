@@ -13,6 +13,7 @@ const Singer = resolve => require(['../pages/Search/Singer.vue'], resolve)
 const Single = resolve => require(['../pages/Search/Single.vue'], resolve)
 const SongSheet = resolve => require(['../pages/Search/SongSheet.vue'], resolve)
 const Personality = resolve => require(['../pages/Home/Personality/Personality.vue'], resolve)
+const RecommendSong = resolve => require(['../pages/Home/Personality/RecommendSong.vue'], resolve)
 const PlayList = resolve => require(['../pages/Home/PlayList/PlayList.vue'], resolve)
 const Highquality = resolve => require(['../pages/Home/PlayList/Highquality.vue'], resolve)
 const DetailList = resolve => require(['../pages/Home/PlayList/DetailList.vue'], resolve)
@@ -22,12 +23,13 @@ const Login = resolve => require(['../pages/Login/Login.vue'], resolve)
 const LoginPhone = resolve => require(['../pages/Login/LoginPhone.vue'], resolve)
 const Resigter = resolve => require(['../pages/Login/Resigter.vue'], resolve)
 const Player = resolve => require(['../pages/Play/Player.vue'], resolve)
+const Comment = resolve => require(['../pages/Play/Comment.vue'], resolve)
 Vue.use(Router)
 export default new Router({
 mode: 'history',
 routes: [
   {
-    path: '/',
+    path: '/home',
     name: 'Home',
     component: Home,
     meta: {
@@ -35,26 +37,34 @@ routes: [
       },
     children: [
       {
-        path: '/',
+        path: '',
         name: 'personality',
         component: Personality
       },
       {
-        path: '/playlist',
+        path: 'playlist',
         name: 'PlayList',
         component: PlayList
       },
       {
-        path: '/radiostation',
+        path: 'radiostation',
         name: 'Radiostation',
         component: RadioStation
       },
       {
-        path: '/rankinglist',
+        path: 'rankinglist',
         name: 'RankingList',
         component: RankingList
       },
     ]
+  },
+  {
+    path: '/recommendSong',
+    name: 'RecommendSong',
+    component: RecommendSong,
+    meta: {
+      notKeepAlive: false
+    }
   },
   {
     path: '/highquality',
@@ -73,7 +83,7 @@ routes: [
     }
   },
   {
-    path: '/mymusic',
+    path: '/',
     name: 'MyMusic',
     component: MyMusic,
     meta: {
@@ -162,6 +172,14 @@ routes: [
     path: '/player',
     name: 'Player',
     component: Player,
+    meta: {
+      notKeepAlive: false
+    }
+  },
+  {
+    path: '/comment',
+    name: 'Comment',
+    component: Comment,
     meta: {
       notKeepAlive: false
     }

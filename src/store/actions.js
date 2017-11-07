@@ -30,6 +30,66 @@ export default {
     })
     commit('GETHOME', homeData)
   },
+  // 首页私人FM
+  getFm (store) {
+    let url = '/api/personal_fm'
+    return http.get(url)
+      .then(({data}) => {
+        if (data.code === 200) {
+          let lists = data.data
+          let songs = {code: 200, list: []}
+          for (var i = 0; i < lists.length; i++) {
+            let ars = []
+            for (let j = 0; j < lists[i].artists.length; j++) {
+              if (j === 2) {
+                break
+              }
+              ars.push(lists[i].artists[j].name)
+            }
+            ars = ars.join('/')
+            let song = {
+              id: lists[i].id, // 歌曲id
+              name: lists[i].name, // 歌名
+              artists: ars,         // 演唱者
+              album: lists[i].album.name // 专辑名
+            }
+            songs.list.push(song)
+          }
+          store.commit('GETFM', songs)
+          console.log(songs)
+          return {status: true, msg: '获取数据成功'}
+        }
+      })
+  },
+  // 首页每日推荐
+  getRecommendSong (store) {
+    let url = '/api/recommend/songs'
+    http.get(url)
+      .then(({data}) => {
+        if (data.code === 200) {
+          let recommend = data.recommend
+          let recommendSong = {code: 200, list: []}
+          for (var i = 0; i < recommend.length; i++) {
+            let ars = []
+            for (let j = 0; j < recommend[i].artists.length; j++) {
+              if (j === 2) {
+                break
+              }
+              ars.push(recommend[i].artists[j].name)
+            }
+            ars = ars.join('/')
+            let list = {
+              id: recommend[i].id, // 歌曲id
+              name: recommend[i].name, // 歌名
+              artists: ars,         // 演唱者
+              album: recommend[i].album.name // 专辑名
+            }
+            recommendSong.list.push(list)
+          }
+          store.commit('GETRECOMMENDSONG', recommendSong)
+        }
+      })
+  },
   // 首页歌单精品歌单
   getHighquality (store) {
     let url = '/api/top/playlist/highquality'
@@ -547,6 +607,83 @@ export default {
           commit('SETLYRICARR', lyric)
           console.log(lyric)
           state.currentLyricArrIndex = 0
+        }
+      })
+  },
+  // 获取歌曲评论
+  getComment (store, payload) {
+    // 利用歌曲的id获取评论
+    let url = '/api/comment/music?id=' + payload.id
+    return http.get(url)
+      .then(({data}) => {
+        // 创建变量用来盛放过滤后的评论信息(热门评论和评论)
+        let filterComments = {code: 200, hotComments: [], comments: []}
+        // 获取热门评论
+        for (var i = 0; i < data.hotComments.length; i++) {
+          let likedCount = data.hotComments[i].likedCount
+          if (likedCount >= 10000) {
+            likedCount = parseInt(likedCount / 10000) + '万'
+          }
+          let time = data.hotComments[i].time
+          time = new Date(time)
+          let year = time.getFullYear()
+          let month = time.getMonth()
+          let date = time.getDate()
+          time = year + '年' + month + '月' + date + '日'
+          let comment = {
+            commentId: data.hotComments[i].commentId,
+            liked: data.hotComments[i].liked,
+            likedCount: likedCount,
+            time: time,
+            content: data.hotComments[i].content,
+            user: {
+              userId: data.hotComments[i].user.userId,
+              nickname: data.hotComments[i].user.nickname,
+              avatarUrl: data.hotComments[i].user.avatarUrl
+            }
+          }
+          filterComments.hotComments.push(comment)
+        }
+        // 获取评论
+        for (var j = 0; j < data.comments.length; j++) {
+          let comment = {
+            commentId: data.comments[j].commentId,
+            liked: data.comments[i].liked,
+            likedCount: data.comments[j].likedCount,
+            time: data.comments[j].time,
+            content: data.comments[j].content,
+            user: {
+              userId: data.comments[j].user.userId,
+              nickname: data.comments[j].user.nickname,
+              avatarUrl: data.comments[j].user.avatarUrl
+            }
+          }
+          filterComments.comments.push(comment)
+        }
+        let allLength = filterComments.hotComments.length + filterComments.comments.length
+        filterComments.allLength = allLength
+        store.commit('GETCOMMENT', filterComments)
+        return {status: true, msg: '获取歌词成功'}
+      })
+  },
+  // 给评论点赞
+  likeComment (store, item) {
+    let liked = !item.liked
+    let songMsgId = store.state.songMsg.id
+    // t为点赞参数, 1为点赞, 0为取消点赞
+    let t = 1
+    if (liked) {
+      t = 1
+    } else {
+      t = 0
+    }
+    // id:歌曲id, cid:评论id, type: 音频类型 0: 歌曲, 1: mv, 2: 歌单, 3: 专辑, 4: 电台
+    let url = '/api/comment/like?id=' + songMsgId + '&cid=' + item.commentId + '&t=' + t + '&type=0'
+    return http.get(url)
+      .then(({data}) => {
+        if (data.code === 200) {
+          // store.commit('LIKECOMMENT', item)
+          return {status: true, msg: '点赞成功'}
         }
       })
   },

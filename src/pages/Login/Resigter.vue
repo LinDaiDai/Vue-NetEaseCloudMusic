@@ -1,5 +1,5 @@
 <template>
-  <div class="loginPhone">
+  <div class="loginPhone main">
     <login-top title="手机号注册" btnText="下一步" aBol="false"></login-top>
     <login-footer otherText="其他注册方式"></login-footer>
   </div>  
@@ -15,5 +15,8 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-
+.loginPhone{
+  position: fixed;
+  z-index: 51;
+}
 </style>

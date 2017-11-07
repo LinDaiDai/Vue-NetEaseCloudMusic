@@ -23,7 +23,7 @@ Vue.use(MintUI)
 Vue.config.productionTip = false
 router.beforeEach((to, from, next) => {
   // NProgress.start()
-  if (to.path === '/' || to.path === '/mymusic' || to.path === '/friend' || to.path === '/playlist' || to.path === '/radiostation' || to.path === '/rankinglist') {
+  if (to.path === '/' || to.path === '/home' || to.path === '/friend' || to.path === '/home/playlist' || to.path === '/home/radiostation' || to.path === '/home/rankinglist') {
     store.state.tabBarShow = true
   } else {
     store.state.tabBarShow = false

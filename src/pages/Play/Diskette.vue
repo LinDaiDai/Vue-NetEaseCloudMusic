@@ -17,7 +17,7 @@
         <li>
             <i class="iconfont icon-xiazai"></i>
         </li>
-        <li>
+        <li @click.stop="goComment">
             <i class="iconfont icon-pinglun"></i>
         </li>
         <li>
@@ -35,6 +35,16 @@ export default {
     },
     playStatus () {
       return this.$store.state.playStatus
+    }
+  },
+  methods: {
+    goComment () {
+      this.$store.dispatch('getComment', this.songMsg)
+        .then(res => {
+          if (res.status) {
+            this.$router.push('/comment')
+          }
+        })
     }
   }
 }

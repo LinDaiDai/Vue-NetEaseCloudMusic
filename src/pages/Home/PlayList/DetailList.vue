@@ -111,14 +111,5 @@ export default {
 }
 #detailListHeader{
   background-color: rgba(0, 0, 0, 0.9);
-  .iconRight{
-      padding: 1.2rem 0.5rem;
-      text-align: center;
-      font-size: 2.5rem;
-      line-height: 2rem;
-  }
-  .icon-chazhao{
-      font-size: 2rem;
-  }
 }
 </style>

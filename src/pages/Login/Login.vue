@@ -32,11 +32,12 @@ export default {
 </script>
 <style lang="less" scoped>
 .login{
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+    z-index: 51;
     background:linear-gradient(to bottom,#f3d3d3 1%, #f0b7b7 20%, white);
     .loginHeader{
         width: 100%;

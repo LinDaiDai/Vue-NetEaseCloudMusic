@@ -27,6 +27,14 @@ export default {
   GETUSERHOME (state, data) {
     state.myMusic = data
   },
+  // 获取首页私人fm
+  GETFM (state, data) {
+    state.fm = data
+  },
+  // 获取首页每日歌单
+  GETRECOMMENDSONG (state, data) {
+    state.recommendSong = data
+  },
   // 获取搜索结果
   GETRESULES (state, data) {
     state.results = data
@@ -87,9 +95,7 @@ export default {
       if (i !== (length - 1)) {
         if (time > state.lyricArr[i].time && time < state.lyricArr[i + 1].time) {
           state.currentLyricArrIndex = i
-          console.log(state.liHeight)
           state.lyricTop = 17 - i * state.liHeight / 12
-          console.log(state.lyricTop)
         }
       } else {
         // 最后一句歌词不做处理
@@ -134,5 +140,13 @@ export default {
       type: 'list', // 当前播放列表来源 { list: 歌单列表, search: 搜索列表}
       list: [] // 播放列表
     }
+  },
+  // 获取歌曲评论
+  GETCOMMENT (state, data) {
+    state.comments = data
   }
+  // 点赞取反
+  // LIKECOMMENT (state, item) {
+
+  // }
 }

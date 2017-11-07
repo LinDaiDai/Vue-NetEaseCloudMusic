@@ -44,7 +44,9 @@ export default {
   watch: {
     currentLyricArrIndex: function (val) {
       let pos = this.$refs['item'][val].getBoundingClientRect()
-      console.log(pos)
+      if (pos.height === 0) {
+        pos.height = 5
+      }
       this.$store.commit('SETLIHEIGHT', pos.height)
     }
   },
@@ -147,6 +149,7 @@ export default {
     left: 0;
     width: 100%;
     overflow: hidden;
+    padding: 0 0.5rem;
     li{
       width: 100%;
       padding:  0.6rem 0;

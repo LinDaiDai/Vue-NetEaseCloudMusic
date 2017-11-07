@@ -5,10 +5,10 @@
             <img class="imgBlock" src="./images/me.png" alt="">
         </div>
         <ul class="tabUl">
-            <router-link tag="li" class="myMusic" to="/mymusic">
+            <router-link tag="li" class="myMusic" to="/">
                 <span></span>
             </router-link>
-            <router-link tag="li" class="home" to="/">
+            <router-link tag="li" class="home" to="/home">
                 <span></span>
             </router-link>
             <router-link tag="li" class="friend" to="/friend">

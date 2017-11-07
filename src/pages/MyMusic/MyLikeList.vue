@@ -110,7 +110,6 @@ export default {
   top: 0rem;
 }
 #myLikeHearderBasis{
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.9);
 }
-
 </style>

@@ -65,6 +65,7 @@ export default {
   background-color: #fff;
   z-index: 50;
   padding: 0.5rem;
+  overflow: hidden;
   .playerPicUrl{
     float: left;
     width: 3.5rem;
@@ -85,8 +86,12 @@ export default {
       font-size: 1.4rem;
       color: #333;
       padding: 0.5rem 0;
+      overflow: hidden;
+      max-height: 1.8rem;
+      text-overflow: ellipsis;
     }
     .songLyric{
+      padding-top: 0.5rem;
       font-size: 1.2rem;
       color: #ccc;
     }

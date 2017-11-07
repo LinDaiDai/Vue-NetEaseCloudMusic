@@ -4,8 +4,8 @@
       <mt-swipe-item v-for="item in banners" :key="item.id"><img class="imgBlock" :src="item.pic"></mt-swipe-item>
     </mt-swipe>
     <ul class="perNav">
-      <router-link tag="li" to="/"><span class="imgBlock backCenter privateFM"></span>私人FM</router-link>
-      <router-link tag="li" to="/"><span class="imgBlock backCenter everyDay"></span>每日歌曲推荐</router-link>
+      <li @click="goFm"><span class="imgBlock backCenter privateFM"></span>私人FM</li>
+      <router-link tag="li" to="/recommendSong"><span class="imgBlock backCenter everyDay"></span>每日歌曲推荐</router-link>
       <router-link tag="li" to="/"><span class="imgBlock backCenter hotRanking"></span>云音乐热歌榜</router-link>
     </ul>
     <div class="perMain">
@@ -63,7 +63,8 @@
 <script>
 export default {
   created () {
-
+    // 获取每日推荐歌曲
+    this.$store.dispatch('getRecommendSong')
   },
   data () {
     return {
@@ -97,7 +98,18 @@ export default {
     }
   },
   methods: {
-
+    goFm () {
+      this.$store.dispatch('getFm')
+        .then(res => {
+          if (res.status) {
+            let fm = this.$store.state.fm.list
+            this.$store.dispatch('playAll', fm)
+            this.$router.push('/player')
+          } else {
+            console.log('获取数据失败')
+          }
+        })
+    }
   }
 }
 </script>

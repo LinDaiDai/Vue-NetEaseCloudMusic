@@ -5,6 +5,10 @@ export default {
   homeData: {},
   // 主页精品歌单
   highquality: {},
+  // 首页fm
+  fm: {},
+  // 主页每日推荐歌曲
+  recommendSong: {},
   // 歌单详情
   detailList: {},
   // 控制用户信息显示
@@ -88,6 +92,8 @@ export default {
   audioElement: '',
   // 正在播放的歌的歌词组
   lyricArr: [],
+  // 歌曲评论集合
+  comments: {},
   // 正在播放的歌词的下标
   currentLyricArrIndex: 0,
   // 正在播放的音频的播放时间

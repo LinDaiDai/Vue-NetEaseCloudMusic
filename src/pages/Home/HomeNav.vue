@@ -1,10 +1,10 @@
 <template>
   <div class="homeNav">
     <ul class="homeHeader">
-      <router-link tag="li" class="personality" to="/">个性推荐</router-link>
-      <router-link tag="li" class="playlist" to="/playlist">歌单</router-link>
-      <router-link tag="li" class="radiostation" to="/radiostation">主播电台</router-link>
-      <router-link tag="li" class="rankinglist" to="/rankinglist">排行榜</router-link>
+      <router-link tag="li" class="personality" :to="{path:'/home'}">个性推荐</router-link>
+      <router-link tag="li" class="playlist" :to="{path:'/home/playlist'}">歌单</router-link>
+      <router-link tag="li" class="radiostation" :to="{path:'/home/radiostation'}">主播电台</router-link>
+      <router-link tag="li" class="rankinglist" :to="{path:'/home/rankinglist'}">排行榜</router-link>
     </ul>
   </div>
 </template>
