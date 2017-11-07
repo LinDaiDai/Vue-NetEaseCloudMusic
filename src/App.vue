@@ -28,6 +28,7 @@ export default {
   // 一打开页面时, 获取个性推荐的轮播
   created () {
     this.$store.dispatch('getHome')
+    this.$store.dispatch('getHighquality')
   },
   data () {
     return {

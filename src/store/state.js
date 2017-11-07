@@ -3,6 +3,10 @@ export default {
   tabBarShow: true,
   // 主页面数据
   homeData: {},
+  // 主页精品歌单
+  highquality: {},
+  // 歌单详情
+  detailList: {},
   // 控制用户信息显示
   meBol: false,
   // 用于判断用户是否登录

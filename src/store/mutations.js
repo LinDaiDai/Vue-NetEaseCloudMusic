@@ -3,6 +3,14 @@ export default {
   GETHOME (state, data) {
     state.homeData = data
   },
+  // 获取主页精品歌单
+  GETHIGHQUALITY (state, data) {
+    state.highquality = data
+  },
+  // 获取歌单详情
+  GETDETAILLIST (state, data) {
+    state.detailList = data
+  },
   // 控制我的页面显示隐藏
   CHANGEMEBOL (state) {
     state.meBol = !state.meBol

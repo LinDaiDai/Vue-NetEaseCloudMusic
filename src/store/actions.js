@@ -30,6 +30,79 @@ export default {
     })
     commit('GETHOME', homeData)
   },
+  // 首页歌单精品歌单
+  getHighquality (store) {
+    let url = '/api/top/playlist/highquality'
+    http.get(url)
+      .then(({data}) => {
+        if (data.code === 200) {
+          let playlists = data.playlists
+          let filterPlaylists = {code: 200, list: []}
+          for (var i = 0; i < playlists.length; i++) {
+            // 若播放次数和收藏次数大于10000
+            let playCount = playlists[i].playCount
+            if (playCount >= 10000) {
+              playCount = parseInt(playCount / 10000) + '万'
+            }
+            let subscribedCount = playlists[i].subscribedCount
+            if (subscribedCount >= 10000) {
+              subscribedCount = parseInt(subscribedCount / 10000) + '万'
+            }
+            let playlist = {
+              id: playlists[i].id,  // 歌单id
+              name: playlists[i].name,   // 歌单名
+              coverImgUrl: playlists[i].coverImgUrl,  // 背景图片
+              description: playlists[i].description,  // 歌单描述
+              tags: playlists[i].tags,  // 分类
+              tag: playlists[i].tag,    // 分类标签
+              playCount: playCount, // 播放次数
+              subscribedCount: subscribedCount,  // 收藏次数
+              shareCount: playlists[i].shareCount,  // 分享次数
+              commentCount: playlists[i].commentCount,  // 评论数
+              copywriter: playlists[i].copywriter,  // 注释
+              creator: {  // 创建者
+                avatarUrl: playlists[i].creator.avatarUrl,  // 头像
+                userId: playlists[i].creator.userId,  // 创建者id
+                nickname: playlists[i].creator.nickname  // 名
+              },
+              list: []    // 具体的歌单
+            }
+            filterPlaylists.list.push(playlist)
+          }
+          store.commit('GETHIGHQUALITY', filterPlaylists)
+        }
+      })
+  },
+  // 歌单详情
+  getDetailList ({commit}, playList) {
+    let url = '/api/playlist/detail?id=' + playList.id
+    http.get(url)
+      .then(({data}) => {
+        if (data.code === 200) {
+          let detailList = playList
+          detailList.code = 200
+          let tracks = data.playlist.tracks
+          for (let i = 0; i < tracks.length; i++) {
+            let ars = []
+            for (let j = 0; j < tracks[i].ar.length; j++) {
+              if (j === 2) {
+                break
+              }
+              ars.push(tracks[i].ar[j].name)
+            }
+            ars = ars.join('/')
+            let list = {
+              id: tracks[i].id, // 歌曲id
+              name: tracks[i].name, // 歌名
+              artists: ars,         // 演唱者
+              album: tracks[i].al.name // 专辑名
+            }
+            detailList.list.push(list)
+          }
+          commit('GETDETAILLIST', detailList)
+        }
+      })
+  },
   // 用户登录
   login (store, obj) {
     let url = '/api/login/cellphone?phone=' + obj.phone + '&password=' + obj.password
@@ -374,7 +447,12 @@ export default {
   },
   // 更改音频时, 进行播放
   setSongMsg (store, payload) {
+    // 将当前播放的歌曲设为更改的这个歌曲
     store.state.songMsg = payload
+    // 初始化歌词的位置
+    store.state.lyricTop = 17
+    // 初始化歌词组
+    store.state.lyricArr = []
     let picUrl = '/api/song/detail?ids=' + payload.id
     http.get(picUrl)
       .then(({data}) => {

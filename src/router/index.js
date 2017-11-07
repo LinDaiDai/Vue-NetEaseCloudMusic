@@ -14,6 +14,8 @@ const Single = resolve => require(['../pages/Search/Single.vue'], resolve)
 const SongSheet = resolve => require(['../pages/Search/SongSheet.vue'], resolve)
 const Personality = resolve => require(['../pages/Home/Personality/Personality.vue'], resolve)
 const PlayList = resolve => require(['../pages/Home/PlayList/PlayList.vue'], resolve)
+const Highquality = resolve => require(['../pages/Home/PlayList/Highquality.vue'], resolve)
+const DetailList = resolve => require(['../pages/Home/PlayList/DetailList.vue'], resolve)
 const RadioStation = resolve => require(['../pages/Home/RadioStation/RadioStation.vue'], resolve)
 const RankingList = resolve => require(['../pages/Home/RankingList/RankingList.vue'], resolve)
 const Login = resolve => require(['../pages/Login/Login.vue'], resolve)
@@ -55,12 +57,28 @@ routes: [
     ]
   },
   {
+    path: '/highquality',
+    name: 'Highquality',
+    component: Highquality,
+    meta: {
+      notKeepAlive: false
+    }
+  },
+  {
+    path: '/detailList',
+    name: 'DetailList',
+    component: DetailList,
+    meta: {
+      notKeepAlive: false
+    }
+  },
+  {
     path: '/mymusic',
     name: 'MyMusic',
     component: MyMusic,
     meta: {
       notKeepAlive: false
-    },
+    }
   },
   {
     path: 'newlyplay',
