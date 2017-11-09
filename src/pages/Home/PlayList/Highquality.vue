@@ -52,10 +52,14 @@ export default {
 <style lang="less" scoped>
 @import url('../../../assets/styles/color.less');
 @import url('../../../assets/styles/basis.less');
-.iconRight{
-    padding: 1.2rem 0;
-    line-height: 2rem;
+.highquality{
+  .iconRight{
+      padding: 1.2rem 0;
+      line-height: 2rem;
+      font-size: 1.6rem;
+  }
 }
+
 .highqualityUl{
   width: 100%;
   .highqualityLi{

@@ -19,6 +19,7 @@ const Highquality = resolve => require(['../pages/Home/PlayList/Highquality.vue'
 const DetailList = resolve => require(['../pages/Home/PlayList/DetailList.vue'], resolve)
 const RadioStation = resolve => require(['../pages/Home/RadioStation/RadioStation.vue'], resolve)
 const RankingList = resolve => require(['../pages/Home/RankingList/RankingList.vue'], resolve)
+const DetailRanking = resolve => require(['../components/Common/DetailRanking.vue'], resolve)
 const Login = resolve => require(['../pages/Login/Login.vue'], resolve)
 const LoginPhone = resolve => require(['../pages/Login/LoginPhone.vue'], resolve)
 const Resigter = resolve => require(['../pages/Login/Resigter.vue'], resolve)
@@ -62,6 +63,14 @@ routes: [
     path: '/recommendSong',
     name: 'RecommendSong',
     component: RecommendSong,
+    meta: {
+      notKeepAlive: false
+    }
+  },
+  {
+    path: '/detailRanking',
+    name: 'DetailRanking',
+    component: DetailRanking,
     meta: {
       notKeepAlive: false
     }

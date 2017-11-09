@@ -6,7 +6,7 @@
     <ul class="perNav">
       <li @click="goFm"><span class="imgBlock backCenter privateFM"></span>私人FM</li>
       <router-link tag="li" to="/recommendSong"><span class="imgBlock backCenter everyDay"></span>每日歌曲推荐</router-link>
-      <router-link tag="li" to="/"><span class="imgBlock backCenter hotRanking"></span>云音乐热歌榜</router-link>
+      <li @click="goDetailRanking"><span class="imgBlock backCenter hotRanking"></span>云音乐热歌榜</li>
     </ul>
     <div class="perMain">
       <div class="sixList divList">
@@ -65,6 +65,8 @@ export default {
   created () {
     // 获取每日推荐歌曲
     this.$store.dispatch('getRecommendSong')
+    // 获取排行榜信息
+    this.$store.dispatch('getAllRanking')
   },
   data () {
     return {
@@ -109,6 +111,10 @@ export default {
             console.log('获取数据失败')
           }
         })
+    },
+    goDetailRanking () {
+      this.$store.commit('SETDETAILRANKING', 1)
+      this.$router.push('/detailRanking')
     }
   }
 }
@@ -117,7 +123,7 @@ export default {
 @import url('../../../assets/styles/color.less');
 @import url('../../../assets/styles/basis.less');
 .mint-swipe{
-  height: 8rem;
+  height: 10rem;
 }
 .perNav{
   height: 6.5rem;
@@ -151,36 +157,7 @@ export default {
   }
 }
 .sixList{
-  .sixUl{
-    width: 100%;
-    li{
-      position: relative;
-      float: left;
-      width: 33.3%;
-      height: 12rem;
-      padding-right: 0.2rem;
-      figure{
-        width: 100%;
-        height: 100%;
-        img{
-          width: 100%;
-          height: 8.7rem;
-        }
-        figcaption{
-          text-align: left;
-          font-size: @fontSizeSmall;
-          color: #000;
-          margin-top: .5rem;
-        }
-      }
-    }
-    li:nth-child(3){
-      padding: 0;
-    }
-    li:last-child{
-      padding: 0;
-    }
-  }
+
 }
 .threeList{
   .threeUl{

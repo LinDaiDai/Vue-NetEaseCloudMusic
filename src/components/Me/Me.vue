@@ -1,6 +1,6 @@
 <template>
   <div class="me" @click="showMe">
-    <div class="meContent" :class="{'meActive': meBol}">  
+    <div class="meContent">
         <div class="meMain">
             <div class="loginMain" v-show="!loginBol">
                 <p>登录网易云音乐</p>
@@ -38,7 +38,7 @@
             <li class="set"><i class="iconfont icon-gengduo1"></i>设置</li>
             <li class="out"><i class="iconfont icon-tuichu18"></i>退出</li> 
         </ul>
-    </div>  
+    </div>
   </div>
 </template>
 <script>
@@ -85,24 +85,32 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.slide-enter-active {
+  transition: transform .3s ease;
+}
+.slide-leave-active {
+  transition: transform .8s ease;
+}
+.slide-enter, .slide-leave-to
+/* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translateX(-300px);
+//   opacity: 0;
+}
 .me{
   position: fixed;
+//   transform: translateX(-40px);
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
   z-index: 100;
-  .meActive{
-    margin-left: 0;
-  }
 }
   .meContent{
     height: 100%;
     width: 100%;
     position: relative;
-    margin-left: -300rem;
-    transition: all 3s;
+    // transform: translateX(0px);
+    // transition: all 3s;
     .meMain::-webkit-scrollbar{display:  none};
     .meMain{
     position: absolute;

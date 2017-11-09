@@ -1,10 +1,6 @@
 <template>
-  <div class="playListComponent">
-    <transition name="fade">
-      <div @click="close" class="mask"></div>
-    </transition>
-    <transition name="up">
       <div class="playListMain fixed">
+        <div class="playListComponent">
         <div class="playListHearder fixed">
           <div class="hearderLeft">
             <div class="playMode"  @click="changePlayMode">
@@ -37,9 +33,9 @@
                 </li>
             </ul>
         </div>
+        </div>
       </div>
-    </transition>
-  </div>
+
 </template>
 <script>
 export default {
@@ -63,10 +59,6 @@ export default {
     }
   },
   methods: {
-    // 关闭显示
-    close () {
-      this.$store.commit('CHANGEPLAYLISTBOL')
-    },
     // 切换播放模式
     changePlayMode () {
       this.$store.commit('CHANGEPLAYMODE')
@@ -83,9 +75,13 @@ export default {
     },
     // 删除当前歌曲
     removeThis (item, index) {
+      console.log(item)
       if (item.id === this.songMsg.id) {
         // 播放下一首
         this.$store.dispatch('nextControl')
+        // 删除此项
+        this.$store.commit('REMOVETHISR', index)
+      } else {
         // 删除此项
         this.$store.commit('REMOVETHISR', index)
       }
@@ -99,34 +95,13 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.mask{
-    position: fixed;
+.fixed{
+    position: absolute;
+}
+.playListComponent{
     width: 100%;
     height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 98;
-    background-color: rgba(0, 0, 0, 0.3);
-    opacity: 1;
-}
-.fade-enter-active, .fade-leave-active {
-    transition: opacity .3s;
-}
-.fade-enter, .fade-leave-active {
-    opacity: 0;
-}
-.up-enter-active, .up-leave-active {
-    transition: all .3s;
-}
-.up-enter, .up-leave-active {
-    -webkit-transform: translateY(100%);
-    -moz-transform: translateY(100%);
-    -ms-transform: translateY(100%);
-    -o-transform: translateY(100%);
-    transform: translateY(100%);
-}
-.fixed{
-    position: fixed;
+    position: relative;
 }
 .playListMain{
     width: 100%;
@@ -143,7 +118,7 @@ export default {
         width: 100%;
         line-height: 4.5rem;
         font-size: 1.4rem;
-        top: 14rem;
+        top: 0;
         border-bottom: 1px solid #ccc;
         .hearderLeft{
             float: left;
@@ -189,7 +164,7 @@ export default {
 .playList{
     padding-left: 1rem;
     width: 100%;
-    top: 18.7rem;
+    top: 4.5rem;
     bottom: 0;
     left: 0;
     right: 0;

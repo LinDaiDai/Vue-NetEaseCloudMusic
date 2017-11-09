@@ -1,14 +1,17 @@
 <template>
   <div id="app">
     <tab-bar v-if="tabBarShow"></tab-bar>
-    <transition name="slide">
+    <transition name="fade">
       <keep-alive>
         <router-view v-if="!$route.meta.notKeepAlive"></router-view>
       </keep-alive>
       <router-view v-if="$route.meta.notKeepAlive"></router-view>
     </transition>
     <player-footer v-if="playListLen > 0"></player-footer>
-    <my-play-list v-if="playListBol"></my-play-list>
+    <div @click="close" v-if="playListBol" class="mask"></div>
+    <transition name="slide">
+      <my-play-list v-if="playListBol"></my-play-list>
+    </transition>
     <audio-controller></audio-controller>
   </div>
 </template>
@@ -36,6 +39,10 @@ export default {
     }
   },
   methods: {
+    // 关闭显示
+    close () {
+      this.$store.commit('CHANGEPLAYLISTBOL')
+    }
   },
   computed: {
     tabBarShow () {
@@ -61,5 +68,24 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+.mask{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 98;
+    background-color: rgba(0, 0, 0, 0.3);
+    opacity: 1;
+}
+.slide-enter-active {
+  transition: transform .3s ease;
+}
+.slide-leave-active {
+  transition: transform .3s ease;
+}
+.slide-enter, .slide-leave-to{
+  transform: translateY(200px);
 }
 </style>

@@ -35,6 +35,17 @@ export default {
   GETRECOMMENDSONG (state, data) {
     state.recommendSong = data
   },
+  // 获取排行榜信息
+  GETRANKINGS (state, data) {
+    state.allRanking = data
+  },
+  // 设置官方榜信息
+  // GETOFFICIALRANKING (state) {
+  // }
+  // 设置排行榜详情
+  SETDETAILRANKING (state, data) {
+    state.detailRanking = data
+  },
   // 获取搜索结果
   GETRESULES (state, data) {
     state.results = data
@@ -130,8 +141,8 @@ export default {
     state.playList.list.push(song)
   },
   // 从列表中移除一个元素
-  REMOVETHIS (state, index) {
-    state.playList.splice(index, 1)
+  REMOVETHISR (state, index) {
+    state.playList.list.splice(index, 1)
   },
   // 清空播放列表
   RESETPLAYLIST (state) {

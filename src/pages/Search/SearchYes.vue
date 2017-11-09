@@ -6,10 +6,10 @@
             <router-link tag="li" to="/singer">歌手</router-link>
             <router-link tag="li" to="/">专辑</router-link>
             <router-link tag="li" to="/">歌单</router-link>
-            <router-link tag="li" to="/">MV</router-link>
+            <!-- <router-link tag="li" to="/">MV</router-link>
             <router-link tag="li" to="/">主播电台</router-link>
-            <router-link tag="li" to="/">用户</router-link>
-            <div class="huakuai"></div>
+            <router-link tag="li" to="/">用户</router-link> -->
+            <div class="slider"></div>
         </ul>
     </div>
     <router-view class="homeMain"></router-view>
@@ -32,21 +32,22 @@ export default {
     .homeNav{
         overflow-x: scroll;
         .homeHeader{
-            width: 140%;
+            width: 100%;
             position: relative;
             li{
-                width: 6.1rem;
+                width: 25%;
                 height: 100%;
                 font-size: 1.2rem;
             }
         }
-        .huakuai{
+        .slider{
             position: absolute;
-            width: 6.1rem;
-            height: 2px;
+            width: 25%;
+            height: 3px;
             left: 0;
             bottom: 0;
             background-color: @backRed;
+            transition: all .3s;
         }
     }
 }

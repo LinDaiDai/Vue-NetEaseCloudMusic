@@ -163,6 +163,86 @@ export default {
         }
       })
   },
+  // 获取所有排行榜信息
+  getAllRanking (store) {
+    let allRanking = {code: 200, rankings: []}
+    for (var i = 0; i < 21; i++) {
+      let idx = i
+      console.log(idx)
+      // 参数idx为对应的排行榜id
+      let url = '/api/top/list?idx=' + idx
+      http.get(url)
+        .then(({data}) => {
+          let result = data.result
+          console.log(result)
+          // 创建单个排行榜对象
+          let ranking = {code: 200, list: []}
+          ranking.id = result.id
+          ranking.name = result.name
+          ranking.coverImgUrl = result.coverImgUrl
+          ranking.shareCount = result.shareCount
+          // 若播放次数和收藏次数大于10000
+          let playCount = result.playCount
+          if (playCount >= 10000) {
+            playCount = parseInt(playCount / 10000) + '万'
+          }
+          let subscribedCount = result.subscribedCount
+          if (subscribedCount >= 10000) {
+            subscribedCount = parseInt(subscribedCount / 10000) + '万'
+          }
+          let commentCount = result.commentCount
+          if (commentCount >= 10000) {
+            commentCount = parseInt(commentCount / 10000) + '万'
+          }
+          ranking.playCount = playCount
+          ranking.subscribedCount = subscribedCount
+          ranking.commentCount = commentCount
+          ranking.commentThreadId = result.commentThreadId
+          // 最近更新时间
+          let updateTime = result.updateTime
+          updateTime = new Date(updateTime)
+          let month = updateTime.getMonth()
+          let date = updateTime.getDate()
+          updateTime = month + '月' + date + '日'
+          ranking.updateTime = updateTime
+          // list(排行榜中的歌单)
+          for (var i = 0; i < result.tracks.length; i++) {
+            let track = result.tracks[i]
+            // 获取演唱者
+            let ars = []
+            for (var j = 0; j < track.artists.length; j++) {
+              if (j === 2) {
+                break
+              }
+              ars.push(track.artists[j].name)
+            }
+            ars = ars.join('/')
+            let song = {
+              id: track.id,
+              name: track.name,
+              artists: ars,
+              album: track.album.name
+            }
+            // 将每首歌添加至单个排行榜歌单中
+            ranking.list.push(song)
+          }
+          // 将单个排行榜添加至排行榜集合中
+          allRanking.rankings.push(ranking)
+        })
+    }
+    console.log(allRanking)
+    store.commit('GETRANKINGS', allRanking)
+  },
+  // 设置详情排行榜
+  setDetailRanking (store, id) {
+    let rankings = store.state.allRanking.rankings
+    for (var i = 0; i < rankings.length; i++) {
+      if (rankings[i].id === id) {
+        store.commit('SETDETAILRANKING', rankings[i])
+        return
+      }
+    }
+  },
   // 用户登录
   login (store, obj) {
     let url = '/api/login/cellphone?phone=' + obj.phone + '&password=' + obj.password

@@ -9,6 +9,10 @@ export default {
   fm: {},
   // 主页每日推荐歌曲
   recommendSong: {},
+  // 排行榜信息
+  allRanking: {},
+  // 排行榜详情
+  detailRanking: {},
   // 歌单详情
   detailList: {},
   // 控制用户信息显示
