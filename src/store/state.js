@@ -11,6 +11,12 @@ export default {
   recommendSong: {},
   // 排行榜信息
   allRanking: {},
+  // 主播电台
+  allRadio: {},
+  // 电台详情
+  detailRadio: {},
+  // 电台节目
+  actRadio: {},
   // 排行榜详情
   detailRanking: {},
   // 歌单详情
@@ -74,7 +80,7 @@ export default {
   // 正在播放的列表
   playList: {
     id: 0, //  类型不为搜索的歌单ID
-    type: 'list', //  当前播放列表来源类型 { list: 歌单列表, search: 搜索列表}
+    type: 'list', //  当前播放 列表来源类型 { list: 歌单列表, search: 搜索列表}
     list: []
   },
   /*

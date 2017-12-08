@@ -409,3 +409,78 @@ img[lazy=loading]{
     padding: 0;
   }
 }
+.commentUl{
+  width: 100%;
+  background-color: white;
+  border-top: 1px solid @borderGary;
+  border-bottom: 1px solid @borderGary;
+  .commentLi::after{
+      display: block;
+      content: '';
+      clear: both;
+  }
+  .commentLi{
+      width: 100%;
+      padding: 0.5rem;
+      padding-right: 0;
+      text-align: left;
+      .avatarUrl{
+          float: left;
+          width: 3rem;
+          height: 100%;
+          img{
+              width: 3rem;
+              height: 3rem;
+          }
+      }
+      .commentRight{
+          position: relative;
+          float: left;
+          width: 23rem;
+          line-height: 1.8rem;
+          padding-left: 0.5rem;
+          padding-bottom: 0.5rem;
+          padding-right: 0.5rem;
+          border-bottom: 1px solid @borderGary;
+          .nickname, .time{
+              width: 100%;
+              color: @fontCcc;
+              font-size: 1.2rem;
+          }
+          .commentContent{
+              padding-top: 0.5rem;
+              line-height: 1.5rem;
+              font-size: 1.4rem;
+              color: #000;
+          }
+          .liked{
+              position: absolute;
+              top: 0;
+              right: 0;
+              font-size: 1.2rem;
+              width: 5rem;
+              height: 1.5rem;
+              .likedCount{
+                padding-top: 0.3rem;
+              }
+              .icon-zan{
+                width: 1.5rem;
+                height: 1.5rem;
+                text-align: center;
+                transform: scale(0.8);
+                transition: all 0.3s cubic-bezier(0.28,-0.42, 0.37, 1.55);
+              }
+              span{
+                  float: left;
+                  display: block;
+                  color: #ccc;
+                  padding: 0 0.2rem;
+              }
+              .active{
+                  transform: scale(1);
+                  color: @fontRed;
+              }
+          }
+      }
+  }
+}

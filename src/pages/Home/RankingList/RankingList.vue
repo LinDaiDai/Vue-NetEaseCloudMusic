@@ -116,7 +116,4 @@ export default {
     }
   }
 }
-.sixUl{
-  padding-bottom: 4.5rem;
-}
 </style>

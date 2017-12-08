@@ -67,6 +67,8 @@ export default {
     this.$store.dispatch('getRecommendSong')
     // 获取排行榜信息
     this.$store.dispatch('getAllRanking')
+    // 获取主播电台
+    this.$store.dispatch('getRadio')
   },
   data () {
     return {
@@ -113,7 +115,8 @@ export default {
         })
     },
     goDetailRanking () {
-      this.$store.commit('SETDETAILRANKING', 1)
+      this.$store.dispatch('setDetailRanking', 3778678)
+      console.log(this.$store.state.detailRanking)
       this.$router.push('/detailRanking')
     }
   }

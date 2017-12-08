@@ -168,13 +168,11 @@ export default {
     let allRanking = {code: 200, rankings: []}
     for (var i = 0; i < 21; i++) {
       let idx = i
-      console.log(idx)
       // 参数idx为对应的排行榜id
       let url = '/api/top/list?idx=' + idx
       http.get(url)
         .then(({data}) => {
           let result = data.result
-          console.log(result)
           // 创建单个排行榜对象
           let ranking = {code: 200, list: []}
           ranking.id = result.id
@@ -230,7 +228,6 @@ export default {
           allRanking.rankings.push(ranking)
         })
     }
-    console.log(allRanking)
     store.commit('GETRANKINGS', allRanking)
   },
   // 设置详情排行榜
@@ -242,6 +239,88 @@ export default {
         return
       }
     }
+  },
+  // 获取主播电台
+  getRadio ({commit}) {
+    let url = '/api/personalized/djprogram'
+    http.get(url)
+      .then(({data}) => {
+        if (data.code === 200) {
+          let allRadio = {code: 200, list: []}
+          for (var i = 0; i < data.result.length; i++) {
+            let oneData = data.result[i]
+            let radio = {
+              rid: oneData.program.radio.id,
+              picUrl: oneData.program.radio.picUrl,
+              rcmdText: oneData.program.radio.rcmdText,
+              name: oneData.program.radio.name
+            }
+            allRadio.list.push(radio)
+          }
+          console.log(allRadio)
+          commit('GETRADIO', allRadio)
+        }
+      })
+  },
+  // 获取电台详情
+  getDetailRadio ({commit}, rid) {
+    let url = '/api/dj/detail?rid=' + rid
+    return http.get(url)
+      .then(({data}) => {
+        if (data.code === 200) {
+          let djRadio = data.djRadio
+          // 评论集合
+          let commentDatas = []
+          for (var i = 0; i < djRadio.commentDatas.length; i++) {
+            let comment = {
+              nickname: djRadio.commentDatas[i].userProfile.nickname,
+              avatarUrl: djRadio.commentDatas[i].userProfile.avatarUrl,
+              content: djRadio.commentDatas[i].content,
+              programName: djRadio.commentDatas[i].programName
+            }
+            commentDatas.push(comment)
+          }
+          // 订阅人数
+          let subCount = djRadio.subCount
+          if (subCount >= 10000) {
+            subCount = parseInt(subCount / 10000) + '万'
+          }
+          let radio = {
+            id: djRadio.dj.id,
+            avatarUrl: djRadio.dj.avatarUrl,
+            name: djRadio.name,
+            nickname: djRadio.dj.nickname,
+            picUrl: djRadio.picUrl,
+            subCount: subCount,
+            programCount: djRadio.programCount,
+            category: djRadio.category,
+            desc: djRadio.desc,
+            commentDatas: commentDatas
+          }
+          console.log(radio)
+          commit('GETDETAILRADIO', radio)
+          return {status: true}
+        }
+      })
+  },
+  // 获取电台节目
+  getAct ({commit}, rid) {
+    let url = '/api/dj/program?rid=' + rid
+    http.get(url)
+      .then(({data}) => {
+        if (data.code === 200) {
+          let programs = data.programs
+          let actRadio = {code: 200, list: []}
+          for (var i = 0; i < programs.length; i++) {
+            let act = {
+              id: programs[i].mainSong.id,
+              name: programs[i].mainSong.name
+            }
+            actRadio.list.push(act)
+          }
+          commit('GETACTRADIO', actRadio)
+        }
+      })
   },
   // 用户登录
   login (store, obj) {

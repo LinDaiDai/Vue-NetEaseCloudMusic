@@ -39,12 +39,21 @@ export default {
   GETRANKINGS (state, data) {
     state.allRanking = data
   },
-  // 设置官方榜信息
-  // GETOFFICIALRANKING (state) {
-  // }
   // 设置排行榜详情
   SETDETAILRANKING (state, data) {
     state.detailRanking = data
+  },
+  // 获取主播电台
+  GETRADIO (state, data) {
+    state.allRadio = data
+  },
+  // 获取电台详情
+  GETDETAILRADIO (state, data) {
+    state.detailRadio = data
+  },
+  // 获取电台节目
+  GETACTRADIO (state, data) {
+    state.actRadio = data
   },
   // 获取搜索结果
   GETRESULES (state, data) {
@@ -156,8 +165,4 @@ export default {
   GETCOMMENT (state, data) {
     state.comments = data
   }
-  // 点赞取反
-  // LIKECOMMENT (state, item) {
-
-  // }
 }
